@@ -50,8 +50,6 @@ namespace dopetest_xamarin
                     {
                         Text = "Dope",
                         TextColor = new Color(rand.NextDouble(), rand.NextDouble(), rand.NextDouble()),
-                        AnchorX = 0.5,
-                        AnchorY = 0.5,
                         Rotation = rand.NextDouble() * 360
                     };
 
@@ -147,8 +145,6 @@ namespace dopetest_xamarin
                     {
                         Text = "Dope",
                         TextColor = new Color(rand.NextDouble(), rand.NextDouble(), rand.NextDouble()),
-                        AnchorX = 0.5,
-                        AnchorY = 0.5,
                         Rotation = rand.NextDouble() * 360
                     };
 
@@ -263,8 +259,6 @@ namespace dopetest_xamarin
                 {
                     Text = "Dope",
                     TextColor = new Color(rand.NextDouble(), rand.NextDouble(), rand.NextDouble()),
-                    AnchorX = 0.5,
-                    AnchorY = 0.5,
                     Rotation = rand.NextDouble() * 360
                 };
 

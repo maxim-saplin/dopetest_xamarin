@@ -10,7 +10,7 @@ namespace dopetest_xamarin
 {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
-    [DesignTimeVisible (false)]
+    [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
         public MainPage()
@@ -30,8 +30,6 @@ namespace dopetest_xamarin
 
             var width = absolute.Width;
             var height = absolute.Height;
-
-            absolute.Children.Clear();
 
             var i = 0;
             var processed = 0;
@@ -87,7 +85,7 @@ namespace dopetest_xamarin
 
             Device.StartTimer(TimeSpan.FromMilliseconds(500), () =>
             {
-                if (startMT.IsVisible)
+                if (stop.IsVisible)
                 {
                     var avg = avgSum / avgN;
                     dopes.Text = string.Format("{0:0.00} Dopes/s (AVG)", avg).PadLeft(21);
@@ -118,12 +116,7 @@ namespace dopetest_xamarin
             var width = absolute.Width;
             var height = absolute.Height;
 
-            startMT.IsVisible = startST.IsVisible = false;
-            stop.IsVisible = true;
-
             const int step = 75;
-
-            absolute.Children.Clear();
 
             var processed = 0;
 
@@ -227,16 +220,11 @@ namespace dopetest_xamarin
             var width = absolute.Width;
             var height = absolute.Height;
 
-            startMT.IsVisible = startST.IsVisible = false;
-            stop.IsVisible = true;
-
             const int step = 20;
             var labels = new Label[step * 2];
 
-            absolute.Children.Clear();
-
             var processed = 0;
-            
+
             long prevTicks = 0;
             long prevMs = 0;
             int prevProcessed = 0;
@@ -295,14 +283,169 @@ namespace dopetest_xamarin
             };
 
             sw.Start();
-            
+
+            Device.BeginInvokeOnMainThread(loop);
+        }
+
+        void StartTestGridST()
+        {
+            var rand = new Random2(0);
+
+            breakTest = false;
+
+            var width = grid.Width;
+            var height = grid.Height;
+
+            const int step = 20;
+            var labels = new Label[step * 2];
+
+            var processed = 0;
+
+            long prevTicks = 0;
+            long prevMs = 0;
+            int prevProcessed = 0;
+            double avgSum = 0;
+            int avgN = 0;
+            var sw = new Stopwatch();
+
+            Action loop = null;
+
+            loop = () =>
+            {
+                if (breakTest)
+                {
+                    var avg = avgSum / avgN;
+                    dopes.Text = string.Format("{0:0.00} Dopes/s (AVG)", avg).PadLeft(21);
+                    return;
+                }
+
+                var label = new Label()
+                {
+                    Text = "Dope",
+                    TextColor = new Color(rand.NextDouble(), rand.NextDouble(), rand.NextDouble()),
+                    Rotation = rand.NextDouble() * 360,
+                    TranslationX = rand.NextDouble() * width,
+                    TranslationY = rand.NextDouble() * height
+                };
+
+
+                if (processed > max)
+                {
+                    grid.Children.RemoveAt(0);
+                }
+
+                grid.Children.Add(label);
+
+                processed++;
+
+                if (sw.ElapsedMilliseconds - prevMs > 500)
+                {
+
+                    var r = (double)(processed - prevProcessed) / ((double)(sw.ElapsedTicks - prevTicks) / Stopwatch.Frequency);
+                    prevTicks = sw.ElapsedTicks;
+                    prevProcessed = processed;
+
+                    if (processed > max)
+                    {
+                        dopes.Text = string.Format("{0:0.00} Dopes/s", r).PadLeft(15);
+                        avgSum += r;
+                        avgN++;
+                    }
+
+                    prevMs = sw.ElapsedMilliseconds;
+                }
+
+                Device.BeginInvokeOnMainThread(loop);
+            };
+
+            sw.Start();
+
+            Device.BeginInvokeOnMainThread(loop);
+        }
+
+        void StartTestChangeST()
+        {
+            var rand = new Random2(0);
+
+            breakTest = false;
+
+            var width = grid.Width;
+            var height = grid.Height;
+
+            const int step = 20;
+            var labels = new Label[step * 2];
+
+            var processed = 0;
+
+            long prevTicks = 0;
+            long prevMs = 0;
+            int prevProcessed = 0;
+            double avgSum = 0;
+            int avgN = 0;
+            var sw = new Stopwatch();
+
+            var texts = new string[] { "dOpe", "Dope", "doPe", "dopE" };
+
+            Action loop = null;
+
+            loop = () =>
+            {
+                if (breakTest)
+                {
+                    var avg = avgSum / avgN;
+                    dopes.Text = string.Format("{0:0.00} Dopes/s (AVG)", avg).PadLeft(21);
+                    return;
+                }
+
+                var label = new Label()
+                {
+                    Text = "Dope",
+                    TextColor = new Color(rand.NextDouble(), rand.NextDouble(), rand.NextDouble()),
+                    Rotation = rand.NextDouble() * 360
+                };
+
+                AbsoluteLayout.SetLayoutFlags(label, AbsoluteLayoutFlags.PositionProportional);
+                AbsoluteLayout.SetLayoutBounds(label, new Rectangle(rand.NextDouble(), rand.NextDouble(), 80, 24));
+
+                if (processed > max)
+                {
+                    (absolute.Children[processed % max] as Label).Text = texts[(int)Math.Floor(rand.NextDouble() * 4)];
+                }
+                else absolute.Children.Add(label);
+
+                processed++;
+
+                if (sw.ElapsedMilliseconds - prevMs > 500)
+                {
+
+                    var r = (double)(processed - prevProcessed) / ((double)(sw.ElapsedTicks - prevTicks) / Stopwatch.Frequency);
+                    prevTicks = sw.ElapsedTicks;
+                    prevProcessed = processed;
+
+                    if (processed > max)
+                    {
+                        dopes.Text = string.Format("{0:0.00} Dopes/s", r).PadLeft(15);
+                        avgSum += r;
+                        avgN++;
+                    }
+
+                    prevMs = sw.ElapsedMilliseconds;
+                }
+
+                Device.BeginInvokeOnMainThread(loop);
+            };
+
+            sw.Start();
+
             Device.BeginInvokeOnMainThread(loop);
         }
 
         private void SetControlsAtStart()
         {
-            startMT.IsVisible = startST.IsVisible = false;
-            stop.IsVisible = true;
+            startChangeST.IsVisible = startST.IsVisible = startGridST.IsVisible = false;
+            stop.IsVisible = dopes.IsVisible = true;
+            absolute.Children.Clear();
+            grid.Children.Clear();
             dopes.Text = "Warming up..";
         }
 
@@ -318,12 +461,26 @@ namespace dopetest_xamarin
             StartTestST();
         }
 
+
+        void startGridST_Clicked(System.Object sender, System.EventArgs e)
+        {
+            SetControlsAtStart();
+            StartTestGridST();
+        }
+
+        void startChangeST_Clicked(System.Object sender, System.EventArgs e)
+        {
+            SetControlsAtStart();
+            StartTestChangeST();
+        }
+
         void Stop_Clicked(System.Object sender, System.EventArgs e)
         {
             breakTest = true;
             stop.IsVisible = false;
-            startMT.IsVisible = startST.IsVisible = true;
+            startChangeST.IsVisible = startST.IsVisible = startGridST.IsVisible = true;
         }
+
 
     }
 }

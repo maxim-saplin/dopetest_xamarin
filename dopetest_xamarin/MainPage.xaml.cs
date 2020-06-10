@@ -236,6 +236,8 @@ namespace dopetest_xamarin
 
             loop = () =>
             {
+                var now = sw.ElapsedMilliseconds;
+
                 if (breakTest)
                 {
                     var avg = avgSum / avgN;
@@ -243,40 +245,44 @@ namespace dopetest_xamarin
                     return;
                 }
 
-                var label = new Label()
+                //60hz, 16ms to build the frame
+                while (sw.ElapsedMilliseconds - now < 16)
                 {
-                    Text = "Dope",
-                    TextColor = new Color(rand.NextDouble(), rand.NextDouble(), rand.NextDouble()),
-                    Rotation = rand.NextDouble() * 360
-                };
+                    var label = new Label()
+                    {
+                        Text = "Dope",
+                        TextColor = new Color(rand.NextDouble(), rand.NextDouble(), rand.NextDouble()),
+                        Rotation = rand.NextDouble() * 360
+                    };
 
-                AbsoluteLayout.SetLayoutFlags(label, AbsoluteLayoutFlags.PositionProportional);
-                AbsoluteLayout.SetLayoutBounds(label, new Rectangle(rand.NextDouble(), rand.NextDouble(), 80, 24));
-
-                if (processed > max)
-                {
-                    absolute.Children.RemoveAt(0);
-                }
-
-                absolute.Children.Add(label);
-
-                processed++;
-
-                if (sw.ElapsedMilliseconds - prevMs > 500)
-                {
-
-                    var r = (double)(processed - prevProcessed) / ((double)(sw.ElapsedTicks - prevTicks) / Stopwatch.Frequency);
-                    prevTicks = sw.ElapsedTicks;
-                    prevProcessed = processed;
+                    AbsoluteLayout.SetLayoutFlags(label, AbsoluteLayoutFlags.PositionProportional);
+                    AbsoluteLayout.SetLayoutBounds(label, new Rectangle(rand.NextDouble(), rand.NextDouble(), 80, 24));
 
                     if (processed > max)
                     {
-                        dopes.Text = string.Format("{0:0.00} Dopes/s", r).PadLeft(15);
-                        avgSum += r;
-                        avgN++;
+                        absolute.Children.RemoveAt(0);
                     }
 
-                    prevMs = sw.ElapsedMilliseconds;
+                    absolute.Children.Add(label);
+
+                    processed++;
+
+                    if (sw.ElapsedMilliseconds - prevMs > 500)
+                    {
+
+                        var r = (double)(processed - prevProcessed) / ((double)(sw.ElapsedTicks - prevTicks) / Stopwatch.Frequency);
+                        prevTicks = sw.ElapsedTicks;
+                        prevProcessed = processed;
+
+                        if (processed > max)
+                        {
+                            dopes.Text = string.Format("{0:0.00} Dopes/s", r).PadLeft(15);
+                            avgSum += r;
+                            avgN++;
+                        }
+
+                        prevMs = sw.ElapsedMilliseconds;
+                    }
                 }
 
                 Device.BeginInvokeOnMainThread(loop);
@@ -319,40 +325,46 @@ namespace dopetest_xamarin
                     return;
                 }
 
-                var label = new Label()
+                var now = sw.ElapsedMilliseconds;
+
+                //60hz, 16ms to build the frame
+                while (sw.ElapsedMilliseconds - now < 16)
                 {
-                    Text = "Dope",
-                    TextColor = new Color(rand.NextDouble(), rand.NextDouble(), rand.NextDouble()),
-                    Rotation = rand.NextDouble() * 360,
-                    TranslationX = rand.NextDouble() * width,
-                    TranslationY = rand.NextDouble() * height
-                };
+                    var label = new Label()
+                    {
+                        Text = "Dope",
+                        TextColor = new Color(rand.NextDouble(), rand.NextDouble(), rand.NextDouble()),
+                        Rotation = rand.NextDouble() * 360,
+                        TranslationX = rand.NextDouble() * width,
+                        TranslationY = rand.NextDouble() * height
+                    };
 
-
-                if (processed > max)
-                {
-                    grid.Children.RemoveAt(0);
-                }
-
-                grid.Children.Add(label);
-
-                processed++;
-
-                if (sw.ElapsedMilliseconds - prevMs > 500)
-                {
-
-                    var r = (double)(processed - prevProcessed) / ((double)(sw.ElapsedTicks - prevTicks) / Stopwatch.Frequency);
-                    prevTicks = sw.ElapsedTicks;
-                    prevProcessed = processed;
 
                     if (processed > max)
                     {
-                        dopes.Text = string.Format("{0:0.00} Dopes/s", r).PadLeft(15);
-                        avgSum += r;
-                        avgN++;
+                        grid.Children.RemoveAt(0);
                     }
 
-                    prevMs = sw.ElapsedMilliseconds;
+                    grid.Children.Add(label);
+
+                    processed++;
+
+                    if (sw.ElapsedMilliseconds - prevMs > 500)
+                    {
+
+                        var r = (double)(processed - prevProcessed) / ((double)(sw.ElapsedTicks - prevTicks) / Stopwatch.Frequency);
+                        prevTicks = sw.ElapsedTicks;
+                        prevProcessed = processed;
+
+                        if (processed > max)
+                        {
+                            dopes.Text = string.Format("{0:0.00} Dopes/s", r).PadLeft(15);
+                            avgSum += r;
+                            avgN++;
+                        }
+
+                        prevMs = sw.ElapsedMilliseconds;
+                    }
                 }
 
                 Device.BeginInvokeOnMainThread(loop);
@@ -397,39 +409,47 @@ namespace dopetest_xamarin
                     return;
                 }
 
-                var label = new Label()
-                {
-                    Text = "Dope",
-                    TextColor = new Color(rand.NextDouble(), rand.NextDouble(), rand.NextDouble()),
-                    Rotation = rand.NextDouble() * 360
-                };
 
-                AbsoluteLayout.SetLayoutFlags(label, AbsoluteLayoutFlags.PositionProportional);
-                AbsoluteLayout.SetLayoutBounds(label, new Rectangle(rand.NextDouble(), rand.NextDouble(), 80, 24));
+                var now = sw.ElapsedMilliseconds;
 
-                if (processed > max)
-                {
-                    (absolute.Children[processed % max] as Label).Text = texts[(int)Math.Floor(rand.NextDouble() * 4)];
-                }
-                else absolute.Children.Add(label);
-
-                processed++;
-
-                if (sw.ElapsedMilliseconds - prevMs > 500)
+                //60hz, 16ms to build the frame
+                while (sw.ElapsedMilliseconds - now < 16)
                 {
 
-                    var r = (double)(processed - prevProcessed) / ((double)(sw.ElapsedTicks - prevTicks) / Stopwatch.Frequency);
-                    prevTicks = sw.ElapsedTicks;
-                    prevProcessed = processed;
+                    var label = new Label()
+                    {
+                        Text = "Dope",
+                        TextColor = new Color(rand.NextDouble(), rand.NextDouble(), rand.NextDouble()),
+                        Rotation = rand.NextDouble() * 360
+                    };
+
+                    AbsoluteLayout.SetLayoutFlags(label, AbsoluteLayoutFlags.PositionProportional);
+                    AbsoluteLayout.SetLayoutBounds(label, new Rectangle(rand.NextDouble(), rand.NextDouble(), 80, 24));
 
                     if (processed > max)
                     {
-                        dopes.Text = string.Format("{0:0.00} Dopes/s", r).PadLeft(15);
-                        avgSum += r;
-                        avgN++;
+                        (absolute.Children[processed % max] as Label).Text = texts[(int)Math.Floor(rand.NextDouble() * 4)];
                     }
+                    else absolute.Children.Add(label);
 
-                    prevMs = sw.ElapsedMilliseconds;
+                    processed++;
+
+                    if (sw.ElapsedMilliseconds - prevMs > 500)
+                    {
+
+                        var r = (double)(processed - prevProcessed) / ((double)(sw.ElapsedTicks - prevTicks) / Stopwatch.Frequency);
+                        prevTicks = sw.ElapsedTicks;
+                        prevProcessed = processed;
+
+                        if (processed > max)
+                        {
+                            dopes.Text = string.Format("{0:0.00} Dopes/s", r).PadLeft(15);
+                            avgSum += r;
+                            avgN++;
+                        }
+
+                        prevMs = sw.ElapsedMilliseconds;
+                    }
                 }
 
                 Device.BeginInvokeOnMainThread(loop);

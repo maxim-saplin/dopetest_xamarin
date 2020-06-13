@@ -95,6 +95,14 @@ namespace Saplin.xOPS.UI.Misc
             return (InternalSample() * (1.0 / MBIG));
         }
 
+        protected virtual float SampleFloat()
+        {
+            //Including this division at the end gives us significantly improved
+            //random number distribution.
+            return (InternalSample() * (1.0F / MBIG));
+        }
+
+
         private int InternalSample()
         {
             int retVal;
@@ -131,6 +139,11 @@ namespace Saplin.xOPS.UI.Misc
             return Sample();
         }
 
+
+        public virtual float NextFloat()
+        {
+            return SampleFloat();
+        }
     }
 
 }

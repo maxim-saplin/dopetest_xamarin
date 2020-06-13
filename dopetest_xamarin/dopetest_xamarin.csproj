@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.6.0.847" />
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.3" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="IBMPlexMono-Regular.ttf" />

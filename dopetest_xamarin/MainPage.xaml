@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              x:Class="dopetest_xamarin.MainPage"
              BackgroundColor="Black"
-             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" xmlns:forms="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
              ios:Page.UseSafeArea="True">
 
 <Grid>
@@ -21,6 +21,8 @@
     <AbsoluteLayout x:Name="absolute" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0">
 
     </AbsoluteLayout>
+
+    <forms:SKCanvasView x:Name="canvasview" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" PaintSurface="canvasview_PaintSurface" />
 
     <Grid x:Name="grid" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0">
         <Grid.RowDefinitions>
@@ -52,7 +54,9 @@
          <Button x:Name="startChangeST"
             Text="@ Change" BackgroundColor="Blue"
             Clicked="startChangeST_Clicked"/>
-
+         <Button x:Name="startCanvasST"
+            Text="@ Canvas" BackgroundColor="Blue"
+            Clicked="startCanvasST_Clicked"/>
     </StackLayout>
 
 </Grid>
